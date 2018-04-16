@@ -37,7 +37,7 @@ data$AGE <-  as.integer(data$AGE)
 #plot age and sex
 library(ggplot2)
 ggplot(sex_freqtable,aes(x=AGE,y=Freq,color=SEX,group=SEX))+
-  geom_point(size=1)+
+  geom_point(size=5)+
   geom_line()
 
 #plot contour
@@ -67,9 +67,31 @@ data$agegrp[data$AGE>=70 & data$AGE<=79] <- 7
 data$agegrp[data$AGE>=80 & data$AGE<=89] <- 8
 data$agegrp[data$AGE>=90 & data$AGE<=99] <- 9
 
+grp_freqtable$scale[grp_freqtable$grp=='0F'] <- 1
+grp_freqtable$scale[grp_freqtable$grp=='1F'] <- 2
+grp_freqtable$scale[grp_freqtable$grp=='2F'] <- 3
+grp_freqtable$scale[grp_freqtable$grp=='3F'] <- 4
+grp_freqtable$scale[grp_freqtable$grp=='4F'] <- 5
+grp_freqtable$scale[grp_freqtable$grp=='5F'] <- 6
+grp_freqtable$scale[grp_freqtable$grp=='6F'] <- 7
+grp_freqtable$scale[grp_freqtable$grp=='7F'] <- 8
+grp_freqtable$scale[grp_freqtable$grp=='8F'] <- 9
+grp_freqtable$scale[grp_freqtable$grp=='9F'] <- 10
+grp_freqtable$scale[grp_freqtable$grp=='0M'] <- 11
+grp_freqtable$scale[grp_freqtable$grp=='1M'] <- 12
+grp_freqtable$scale[grp_freqtable$grp=='2M'] <- 13
+grp_freqtable$scale[grp_freqtable$grp=='3M'] <- 14
+grp_freqtable$scale[grp_freqtable$grp=='4M'] <- 15
+grp_freqtable$scale[grp_freqtable$grp=='5M'] <- 16
+grp_freqtable$scale[grp_freqtable$grp=='6M'] <- 17
+grp_freqtable$scale[grp_freqtable$grp=='7M'] <- 18
+grp_freqtable$scale[grp_freqtable$grp=='8M'] <- 19
+grp_freqtable$scale[grp_freqtable$grp=='9M'] <- 20
+
+
 #add gender to age buckets
 data$grp <- paste(data$agegrp,data$SEX,sep= "")
-
+grp_freqtable<- arrange(grp_freqtable, scale)
 
 #Age Buckets Freq Table
 grp_freqtable <- xtabs(~ CASE_YR+ grp, data=data)
@@ -78,8 +100,10 @@ write.csv(grp_freqtable, "grp_freqtable.csv")
 grp_freqtable <- read.csv("grp_freqtable.csv")
 
 #stacked age bucket bar chart
-ggplot(data = grp_freqtable, aes(x = CASE_YR, y = Freq, fill = grp)) + 
-  geom_bar(stat = "Identity")
+cols <- c('1' = "#fcfbfd", '2' = "#efedf5", '3 '= "#dadaeb", '4' ="#bcbddc",' 5' ="#9e9ac8", '6 '= "#807dba", '7' = "#6a51a3", '8' ="#54278f", '9' = "#3f007d", '10' = "black", '11' = "#fff5eb", '12' = "#fee6ce",'13' = "#fdd0a2", '14' = "#fdae6b", '15' = "#fd8d3c", '16' = "#f16913", '17' = "#d94801", '18' = "#a63603", '19' = "#7f2704", '20' = "black")
 
-grp_freqtable$grp <- factor(grp_freqtable$grp,levels(grp_freqtable$grp)[c("0F","1F","2F","3F","4F","5F","6F","7F","8F","9F","0M","1M","2M","3M","4M","5M","6M","7M","8M","9M")])
+ggplot(data = grp_freqtable, aes(x = CASE_YR, y = Freq, fill = scale)) +
+  geom_bar(stat = "Identity") +
+  scale_fill_manual(values = cols)
 
+## ^^ https://stackoverflow.com/questions/17331892/order-and-color-of-bars-in-ggplot2-barplot
