@@ -37,7 +37,7 @@ data$AGE <-  as.integer(data$AGE)
 #plot age and sex
 library(ggplot2)
 ggplot(sex_freqtable,aes(x=AGE,y=Freq,color=SEX,group=SEX))+
-  geom_point(size=5)+
+  geom_point(size=1)+
   geom_line()
 
 #plot contour
@@ -49,7 +49,8 @@ library(ggplot2)
 ggplot(data = year_freqtable, aes(x = CASE_YR, y = Freq, fill = SEX, color= SEX,group=SEX)) + 
   #geom_bar(stat = "Identity")
   geom_point(size=.5)+
-  geom_line()
+  geom_line() +
+  geom_area()
 
 #summary for age
 library(dplyr)
@@ -103,7 +104,7 @@ grp_freqtable <- read.csv("grp_freqtable.csv")
 cols <- c('1' = "#fcfbfd", '2' = "#efedf5", '3 '= "#dadaeb", '4' ="#bcbddc",' 5' ="#9e9ac8", '6 '= "#807dba", '7' = "#6a51a3", '8' ="#54278f", '9' = "#3f007d", '10' = "black", '11' = "#fff5eb", '12' = "#fee6ce",'13' = "#fdd0a2", '14' = "#fdae6b", '15' = "#fd8d3c", '16' = "#f16913", '17' = "#d94801", '18' = "#a63603", '19' = "#7f2704", '20' = "black")
 
 ggplot(data = grp_freqtable, aes(x = CASE_YR, y = Freq, fill = scale)) +
-  geom_bar(stat = "Identity") +
-  scale_fill_manual(values = cols)
+  geom_line(stat = "Identity")
+
 
 ## ^^ https://stackoverflow.com/questions/17331892/order-and-color-of-bars-in-ggplot2-barplot
